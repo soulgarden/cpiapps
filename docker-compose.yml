@@ -1,0 +1,80 @@
+version: '2'
+
+networks:
+  default:
+    ipam:
+      config:
+      - subnet: 160.10.101.0/24
+
+services:
+  postgresql:
+    container_name: cpiapps_postgresql
+    image: postgres:11-alpine
+    environment:
+      POSTGRES_USER: cpiapps
+      POSTGRES_PASSWORD: cpiapps
+      POSTGRES_DB: cpiapps
+    expose:
+    - 5432
+    networks:
+      default:
+        ipv4_address: 160.10.101.07
+  php:
+    container_name: cpiapps_php
+    build: docker/php
+    expose:
+    - 9000
+    networks:
+      default:
+        ipv4_address: 160.10.101.02
+    volumes:
+    - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+    - .:/var/www/cpiapps
+    extra_hosts:
+    - "postgresql.cpiapps.local:160.10.101.07"
+    - "cpiapps.local:160.10.101.03"
+    - "redis.cpiapps.local:160.10.101.04"
+    - "rabbitmq.cpiapps.local:160.10.101.05"
+    - "mailcatcher.cpiapps.local:160.10.101.06"
+
+  openresty:
+    container_name: cpiapps_openresty
+    image: openresty/openresty:alpine
+    expose:
+    - 80
+    networks:
+      default:
+        ipv4_address: 160.10.101.03
+    volumes:
+    - .:/var/www/cpiapps
+    - ./docker/openresty/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+
+  redis:
+    container_name: cpiapps_redis
+    image: redis:4.0.11-alpine
+    expose:
+    - 6379
+    networks:
+      default:
+        ipv4_address: 160.10.101.04
+
+  rabbitmq:
+    container_name: cpiapps_rabbitmq
+    image: rabbitmq:3.7-management-alpine
+    expose:
+    - 15672
+    - 5672
+    - 61613
+    networks:
+      default:
+        ipv4_address: 160.10.101.05
+
+  mailcatcher:
+    container_name: cpiapps_mailcatcher
+    image: schickling/mailcatcher:latest
+    expose:
+    - 1080
+    - 1025
+    networks:
+      default:
+        ipv4_address: 160.10.101.06
