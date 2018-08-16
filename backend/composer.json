@@ -10,6 +10,7 @@
         "symfony/flex": "^1.0",
         "symfony/framework-bundle": "^4.1",
         "symfony/lts": "^4@dev",
+        "symfony/orm-pack": "^1.0",
         "symfony/yaml": "^4.1"
     },
     "require-dev": {
@@ -21,7 +22,8 @@
         "behatch/contexts": "^3.2",
         "endouble/symfony3-custom-coding-standard": "^2.17",
         "phpmd/phpmd": "^2.6",
-        "symfony/dotenv": "^4.1"
+        "symfony/dotenv": "^4.1",
+        "symfony/maker-bundle": "^1.6"
     },
     "config": {
         "preferred-install": {
