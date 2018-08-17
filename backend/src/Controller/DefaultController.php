@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
+use FOS\RestBundle\Controller\Annotations\View as ViewAnnotation;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -13,10 +13,11 @@ class DefaultController extends AbstractController
 {
     /**
      * @Route("/")
-     * @return JsonResponse
+     * @ViewAnnotation()
+     * @return array
      */
-    public function index(): JsonResponse
+    public function index(): array
     {
-        return $this->json(['success' => true]);
+        return ['success' => true];
     }
 }
