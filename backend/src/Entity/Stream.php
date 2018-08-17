@@ -8,6 +8,7 @@ use App\Entity\Common\OfferTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\StreamRepository")
@@ -17,6 +18,7 @@ class Stream
     use IdTrait;
     use AgentTrait;
     use OfferTrait;
+    use TimestampableEntity;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="streams")
@@ -40,12 +42,18 @@ class Stream
     private $hits;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Lead", mappedBy="stream")
+     */
+    private $leads;
+
+    /**
      * Stream constructor.
      */
     public function __construct()
     {
         $this->hosts = new ArrayCollection();
         $this->hits = new ArrayCollection();
+        $this->leads = new ArrayCollection();
     }
 
     /**
@@ -158,6 +166,37 @@ class Stream
             // set the owning side to null (unless already changed)
             if ($hit->getStream() === $this) {
                 $hit->setStream(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Lead[]
+     */
+    public function getLeads(): Collection
+    {
+        return $this->leads;
+    }
+
+    public function addLead(Lead $lead): self
+    {
+        if (!$this->leads->contains($lead)) {
+            $this->leads[] = $lead;
+            $lead->setStream($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLead(Lead $lead): self
+    {
+        if ($this->leads->contains($lead)) {
+            $this->leads->removeElement($lead);
+            // set the owning side to null (unless already changed)
+            if ($lead->getStream() === $this) {
+                $lead->setStream(null);
             }
         }
 

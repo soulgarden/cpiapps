@@ -4,8 +4,8 @@ namespace App\Entity;
 
 use App\Entity\Common\AgentTrait;
 use App\Entity\Common\BigIdTrait;
-use App\Entity\Common\OfferTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\HostRepository")
@@ -14,7 +14,7 @@ class Host
 {
     use BigIdTrait;
     use AgentTrait;
-    use OfferTrait;
+    use TimestampableEntity;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Stream", inversedBy="hosts")

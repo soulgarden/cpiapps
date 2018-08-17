@@ -1,7 +1,15 @@
 # cpiapps
 
-Cpiapps is a backend for CPI platform
+Cpiapps is a backend for CPI platform.
+
 This project was created not for commercial use, only just for fun.
+
+Used stack:
+* php 7.2
+* lua
+* postgresql 
+* rabbitmq
+* openresty
 
 ## Installation
 Installation scripts are optimized to run only on Linux.

@@ -6,6 +6,7 @@ use App\Entity\Common\IdTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OfferRepository")
@@ -13,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Offer
 {
     use IdTrait;
+    use TimestampableEntity;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -25,11 +27,6 @@ class Offer
     private $link;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Lead", mappedBy="offer")
-     */
-    private $leads;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Stream", mappedBy="offer")
      */
     private $streams;
@@ -39,7 +36,6 @@ class Offer
      */
     public function __construct()
     {
-        $this->leads = new ArrayCollection();
         $this->streams = new ArrayCollection();
     }
 
@@ -77,28 +73,6 @@ class Offer
     public function setLink(string $link): self
     {
         $this->link = $link;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Lead[]
-     */
-    public function getLeads(): Collection
-    {
-        return $this->leads;
-    }
-
-    /**
-     * @param Lead $lead
-     * @return Offer
-     */
-    public function addLead(Lead $lead): self
-    {
-        if (!$this->leads->contains($lead)) {
-            $this->leads[] = $lead;
-            $lead->setOffer($this);
-        }
 
         return $this;
     }
