@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use App\Entity\Common\IdTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -9,12 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Offer
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    use IdTrait;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -27,11 +25,22 @@ class Offer
     private $link;
 
     /**
-     * @return int|null
+     * @ORM\OneToMany(targetEntity="App\Entity\Lead", mappedBy="offer")
      */
-    public function getId(): ?int
+    private $leads;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Stream", mappedBy="offer")
+     */
+    private $streams;
+
+    /**
+     * Offer constructor.
+     */
+    public function __construct()
     {
-        return $this->id;
+        $this->leads = new ArrayCollection();
+        $this->streams = new ArrayCollection();
     }
 
     /**
@@ -68,6 +77,84 @@ class Offer
     public function setLink(string $link): self
     {
         $this->link = $link;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Lead[]
+     */
+    public function getLeads(): Collection
+    {
+        return $this->leads;
+    }
+
+    /**
+     * @param Lead $lead
+     * @return Offer
+     */
+    public function addLead(Lead $lead): self
+    {
+        if (!$this->leads->contains($lead)) {
+            $this->leads[] = $lead;
+            $lead->setOffer($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Lead $lead
+     * @return Offer
+     */
+    public function removeLead(Lead $lead): self
+    {
+        if ($this->leads->contains($lead)) {
+            $this->leads->removeElement($lead);
+            // set the owning side to null (unless already changed)
+            if ($lead->getOffer() === $this) {
+                $lead->setOffer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Stream[]
+     */
+    public function getStreams(): Collection
+    {
+        return $this->streams;
+    }
+
+    /**
+     * @param Stream $stream
+     * @return Offer
+     */
+    public function addStream(Stream $stream): self
+    {
+        if (!$this->streams->contains($stream)) {
+            $this->streams[] = $stream;
+            $stream->setOffer($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Stream $stream
+     * @return Offer
+     */
+    public function removeStream(Stream $stream): self
+    {
+        if ($this->streams->contains($stream)) {
+            $this->streams->removeElement($stream);
+            // set the owning side to null (unless already changed)
+            if ($stream->getOffer() === $this) {
+                $stream->setOffer(null);
+            }
+        }
 
         return $this;
     }

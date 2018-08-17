@@ -1,13 +1,14 @@
 <?php
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class DefaultController
  */
-class DefaultController
+class DefaultController extends AbstractController
 {
     /**
      * @Route("/")
@@ -15,6 +16,6 @@ class DefaultController
      */
     public function index(): JsonResponse
     {
-        return new JsonResponse(['success' => true]);
+        return $this->json(['success' => true]);
     }
 }
