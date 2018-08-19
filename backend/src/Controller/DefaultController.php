@@ -2,18 +2,18 @@
 
 namespace App\Controller;
 
-use FOS\RestBundle\Controller\Annotations\View as ViewAnnotation;
+use FOS\RestBundle\Controller\Annotations\View as RestView;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class DefaultController
+ * @Route("/api/v1")
  */
 class DefaultController extends AbstractController
 {
     /**
-     * @Route("/")
-     * @ViewAnnotation()
+     * @Route("/", methods={"GET"})
+     * @RestView()
      * @return array
      */
     public function index(): array
