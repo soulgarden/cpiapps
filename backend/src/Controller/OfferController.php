@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Offer;
+use App\Form\OfferType;
 use FOS\RestBundle\Controller\Annotations\View as RestView;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -36,11 +38,17 @@ class OfferController extends AbstractController
     /**
      * @Route("/", methods={"POST"})
      * @RestView()
+     * @param Request $request
      * @return array
      */
-    public function create(): array
+    public function create(Request $request): array
     {
-//        $this->createForm();
+        $form = $this->createForm(OfferType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+        }
+
         return ['success' => true];
     }
 

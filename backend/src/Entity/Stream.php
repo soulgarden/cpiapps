@@ -17,7 +17,6 @@ class Stream
 {
     use IdTrait;
     use AgentTrait;
-    use OfferTrait;
     use TimestampableEntity;
 
     /**
@@ -25,6 +24,12 @@ class Stream
      * @ORM\JoinColumn(nullable=false)
      */
     private $owner;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Offer", inversedBy="streams")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $offer;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -71,6 +76,25 @@ class Stream
     public function setOwner(?User $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * @return Offer|null
+     */
+    public function getOffer(): ?Offer
+    {
+        return $this->offer;
+    }
+
+    /**
+     * @param Offer|null $offer
+     * @return $this
+     */
+    public function setOffer(?Offer $offer): self
+    {
+        $this->offer = $offer;
 
         return $this;
     }
