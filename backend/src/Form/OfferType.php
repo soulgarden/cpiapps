@@ -15,15 +15,13 @@ class OfferType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name')
-            ->add('link')
-            ->add('createdAt')
-            ->add('updatedAt');
+            ->add('link');
     }
 
     /**
@@ -33,7 +31,7 @@ class OfferType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => Offer::class
+                'data_class' => Offer::class,
             ]
         );
     }
