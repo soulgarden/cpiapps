@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Offer;
-use App\Form\OfferType;
-use App\Service\OfferManager;
+use App\Entity\Stream;
+use App\Form\StreamType;
+use App\Service\StreamManager;
 use FOS\RestBundle\Controller\Annotations\View as RestView;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
@@ -16,22 +16,22 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api/v1/offers")
+ * @Route("/api/v1/streams")
  */
-class OfferController extends FOSRestController
+class StreamController extends FOSRestController
 {
     /**
-     * @var OfferManager
+     * @var StreamManager
      */
-    private $offerService;
+    private $streamManager;
 
     /**
-     * OfferController constructor.
-     * @param OfferManager $offerService
+     * StreamController constructor.
+     * @param StreamManager $streamManager
      */
-    public function __construct(OfferManager $offerService)
+    public function __construct(StreamManager $streamManager)
     {
-        $this->offerService = $offerService;
+        $this->streamManager = $streamManager;
     }
 
     /**
@@ -41,21 +41,21 @@ class OfferController extends FOSRestController
      */
     public function getAll(): array
     {
-        $offers = $this->offerService->getOffers();
+        $streams = $this->streamManager->getStreams();
 
-        return ['offers' => $offers];
+        return ['streams' => $streams];
     }
 
     /**
      * @Route("/{id}", methods={"GET"})
-     * @ParamConverter(name="offer", class="App\Entity\Offer")
+     * @ParamConverter(name="stream", class="App\Entity\Stream")
      * @RestView()
-     * @param Offer $offer
+     * @param Stream $stream
      * @return array
      */
-    public function getOne(Offer $offer): array
+    public function getOne(Stream $stream): array
     {
-        return ['offer' => $offer];
+        return ['stream' => $stream];
     }
 
     /**
@@ -66,43 +66,43 @@ class OfferController extends FOSRestController
      */
     public function create(Request $request)
     {
-        return $this->processRequestForm($request, new Offer());
+        return $this->processRequestForm($request, new Stream());
     }
 
     /**
      * @Route("/{id}", methods={"PUT"})
-     * @ParamConverter(name="offer", class="App\Entity\Offer")
+     * @ParamConverter(name="stream", class="App\Entity\Stream")
      * @RestView()
      * @param Request $request
-     * @param Offer   $offer
+     * @param Stream  $stream
      * @return View|FormInterface
      */
-    public function update(Request $request, Offer $offer)
+    public function update(Request $request, Stream $stream)
     {
-        return $this->processRequestForm($request, $offer);
+        return $this->processRequestForm($request, $stream);
     }
 
     /**
      * @Route("/{id}", methods={"DELETE"})
-     * @ParamConverter(name="offer", class="App\Entity\Offer")
+     * @ParamConverter(name="stream", class="App\Entity\Stream")
      * @RestView(statusCode=204)
-     * @param Offer $offer
+     * @param Stream $stream
      */
-    public function delete(Offer $offer): void
+    public function delete(Stream $stream): void
     {
-        $this->offerService->removeOffer($offer);
+        $this->streamManager->removeStream($stream);
     }
 
     /**
      * @param Request $request
-     * @param Offer   $offer
+     * @param Stream  $stream
      * @return View
      */
-    private function processRequestForm(Request $request, Offer $offer): View
+    private function processRequestForm(Request $request, Stream $stream): View
     {
         $form = $this->createForm(
-            OfferType::class,
-            $offer,
+            StreamType::class,
+            $stream,
             [
                 'method' => $request->getMethod(),
             ]
@@ -112,12 +112,12 @@ class OfferController extends FOSRestController
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $this->offerService->updateOffer($offer);
+                $this->streamManager->updateStream($stream);
 
                 return $this->routeRedirectView(
-                    'app_offer_getone',
+                    'app_stream_getone',
                     [
-                        'id' => $offer->getId(),
+                        'id' => $stream->getId(),
                     ],
                     $request->isMethod('POST') ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT
                 );

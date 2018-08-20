@@ -11,6 +11,7 @@ docker_php_bash:
 	docker-compose exec --user=www-data php /bin/bash
 
 docker_run_tests:
+	docker-compose exec --user=www-data php ./backend/bin/console hautelook:fixtures:load
 	docker-compose exec --user=www-data php ./backend/vendor/bin/behat --config ./backend/behat.yml
 
 docker_openresty_bash:

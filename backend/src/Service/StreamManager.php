@@ -2,15 +2,15 @@
 
 namespace App\Service;
 
-use App\Entity\Offer;
+use App\Entity\Stream;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
- * Class OfferService
+ * Class StreamManager
  * @package App\Service
  */
-class OfferManager
+class StreamManager
 {
     /**
      * @var ObjectManager
@@ -18,7 +18,7 @@ class OfferManager
     private $objectManager;
 
     /**
-     * OfferService constructor.
+     * StreamService constructor.
      * @param ManagerRegistry $managerRegistry
      */
     public function __construct(ManagerRegistry $managerRegistry)
@@ -27,26 +27,26 @@ class OfferManager
     }
 
     /**
-     * @return Offer[]
+     * @return Stream[]
      */
-    public function getOffers(): array
+    public function getStreams(): array
     {
-        return $this->objectManager->getRepository(Offer::class)->findAll();
+        return $this->objectManager->getRepository(Stream::class)->findAll();
     }
 
     /**
-     * @param Offer $offer
+     * @param Stream $offer
      */
-    public function updateOffer(Offer $offer): void
+    public function updateStream(Stream $offer): void
     {
         $this->objectManager->persist($offer);
         $this->objectManager->flush();
     }
 
     /**
-     * @param Offer $offer
+     * @param Stream $offer
      */
-    public function removeOffer(Offer $offer): void
+    public function removeStream(Stream $offer): void
     {
         $this->objectManager->remove($offer);
         $this->objectManager->flush();

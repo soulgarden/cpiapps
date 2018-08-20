@@ -2,13 +2,12 @@
 
 namespace App\Entity;
 
-use App\Entity\Common\AgentTrait;
 use App\Entity\Common\IdTrait;
-use App\Entity\Common\OfferTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\StreamRepository")
@@ -16,22 +15,25 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 class Stream
 {
     use IdTrait;
-    use AgentTrait;
     use TimestampableEntity;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="streams")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $owner;
+    private $user;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="App\Entity\Offer", inversedBy="streams")
      * @ORM\JoinColumn(nullable=false)
      */
     private $offer;
 
     /**
+     * @Assert\NotBlank()
+     * @Assert\Length(max="255")
      * @ORM\Column(type="string", length=255)
      */
     private $link;
@@ -64,18 +66,18 @@ class Stream
     /**
      * @return User|null
      */
-    public function getOwner(): ?User
+    public function getUser(): ?User
     {
-        return $this->owner;
+        return $this->user;
     }
 
     /**
-     * @param User|null $owner
+     * @param User $user
      * @return Stream
      */
-    public function setOwner(?User $owner): self
+    public function setUser(User $user): self
     {
-        $this->owner = $owner;
+        $this->user = $user;
 
         return $this;
     }
@@ -89,10 +91,10 @@ class Stream
     }
 
     /**
-     * @param Offer|null $offer
+     * @param Offer $offer
      * @return $this
      */
-    public function setOffer(?Offer $offer): self
+    public function setOffer(Offer $offer): self
     {
         $this->offer = $offer;
 
@@ -204,6 +206,10 @@ class Stream
         return $this->leads;
     }
 
+    /**
+     * @param Lead $lead
+     * @return Stream
+     */
     public function addLead(Lead $lead): self
     {
         if (!$this->leads->contains($lead)) {
@@ -214,6 +220,10 @@ class Stream
         return $this;
     }
 
+    /**
+     * @param Lead $lead
+     * @return Stream
+     */
     public function removeLead(Lead $lead): self
     {
         if ($this->leads->contains($lead)) {
