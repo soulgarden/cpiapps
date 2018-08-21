@@ -39,7 +39,7 @@ services:
 
   openresty:
     container_name: cpiapps_openresty
-    image: openresty/openresty:alpine
+    build: docker/openresty
     expose:
     - 80
     networks:
@@ -48,6 +48,9 @@ services:
     volumes:
     - .:/var/www/cpiapps
     - ./docker/openresty/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+    extra_hosts:
+    - "redis.cpiapps.local:160.10.101.4"
+    - "rabbitmq.cpiapps.local:160.10.101.5"
 
   redis:
     container_name: cpiapps_redis
@@ -60,7 +63,7 @@ services:
 
   rabbitmq:
     container_name: cpiapps_rabbitmq
-    image: rabbitmq:3.7-management-alpine
+    build: docker/rabbitmq
     expose:
     - 15672
     - 5672

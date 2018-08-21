@@ -10,6 +10,7 @@ Used stack:
 * postgresql 
 * rabbitmq
 * openresty
+* redis
 
 ## Installation
 Installation scripts are optimized to run only on Linux.

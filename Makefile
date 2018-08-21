@@ -4,21 +4,28 @@ docker_up:
 docker_down:
 	docker-compose down
 
+docker_restart:
+	docker-compose restart
+
 docker_composer_install:
 	docker-compose exec --user=www-data php composer install -o -d backend
 
 docker_php_bash:
 	docker-compose exec --user=www-data php /bin/bash
 
+docker_openresty_bash:
+	docker-compose exec openresty /bin/sh
+
+docker_redis_bash:
+	docker-compose exec redis /bin/sh
+
 docker_run_tests:
 	docker-compose exec --user=www-data php ./backend/bin/console hautelook:fixtures:load
 	docker-compose exec --user=www-data php ./backend/vendor/bin/behat --config ./backend/behat.yml
 
-docker_openresty_bash:
-	docker-compose exec openresty /bin/sh
-
 docker_manage_hosts:
 	sudo ./docker/manage-etc-hosts.sh add cpiapps.local            160.10.101.3
+	sudo ./docker/manage-etc-hosts.sh add redis.cpiapps.local      160.10.101.4
 	sudo ./docker/manage-etc-hosts.sh add rabbitmq.cpiapps.local   160.10.101.5
 	sudo ./docker/manage-etc-hosts.sh add mailcather.cpiapps.local 160.10.101.6
 	sudo ./docker/manage-etc-hosts.sh add postgresql.cpiapps.local 160.10.101.7
