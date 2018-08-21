@@ -7,6 +7,9 @@ docker_down:
 docker_restart:
 	docker-compose restart
 
+docker_php_prepare: docker_composer_install
+	cp -n ./docker/openresty/lua_parameters.conf.dist ./docker/openresty/lua_parameters.conf
+
 docker_composer_install:
 	docker-compose exec --user=www-data php composer install -o -d backend
 

@@ -1,50 +1,39 @@
-local rabbitmq = require "resty.rabbitmqstomp"
-local cjson = require "cjson"
+local lead = {}
 
-local strlen =  string.len
+lead.rabbitmqPackage = require "resty.rabbitmqstomp"
+lead.cjson = require "cjson"
 
+function lead.rmqConnect(rmqHost, rmqPort, rmqUsername, rmqPass, rmqVhost)
+    local opts = {
+        username = rmqUsername,
+        password = rmqPass,
+        vhost = rmqVhost
+    }
 
-function rmq_connect()
-    local msg = {key="value1", key2="value2"}
-    local headers = {}
-    headers["destination"] = "/exchange/test/binding"
-    headers["receipt"] = "msg#1"
-    headers["app-id"] = "luaresty"
-    headers["persistent"] = "true"
-    headers["content-type"] = "application/json"
+    lead.mq = lead.rabbitmqPackage:new(opts)
 
-    local ok, err = mq:send(cjson.encode(msg), headers)
+    local ok, err = lead.mq:connect(rmqHost, rmqPort)
+
     if not ok then
-        return
+        ngx.log(ngx.CRIT, "rmq: failed to connect: ", err)
+        ngx.exit(ngx.HTTP_SERVICE_UNAVAILABLE)
     end
-    ngx.log(ngx.INFO, "Published: " .. msg)local msg = {key="value1", key2="value2"}
-    local headers = {}
-    headers["destination"] = "/exchange/test/binding"
-    headers["receipt"] = "msg#1"
-    headers["app-id"] = "luaresty"
-    headers["persistent"] = "true"
-    headers["content-type"] = "application/json"
-
-    local ok, err = mq:send(cjson.encode(msg), headers)
-    if not ok then
-        return
-    end
-    ngx.log(ngx.INFO, "Published: " .. msg)
 end
 
-
-function rmq_publish()
-    local msg = {key="value1", key2="value2"}
+function lead.rmqSend(message)
     local headers = {}
-    headers["destination"] = "/exchange/test/binding"
-    headers["receipt"] = "msg#1"
+    headers["destination"] = "/exchange/lead"
     headers["app-id"] = "luaresty"
     headers["persistent"] = "true"
     headers["content-type"] = "application/json"
 
-    local ok, err = mq:send(cjson.encode(msg), headers)
+    local ok, err = lead.mq:send(lead.cjson.encode(message), headers)
     if not ok then
-        return
+        ngx.log(ngx.CRIT, "rmq: failed to send message: ", err)
+        ngx.exit(ngx.HTTP_SERVICE_UNAVAILABLE)
     end
-    ngx.log(ngx.INFO, "Published: " .. msg)
+
+    return true
 end
+
+return lead

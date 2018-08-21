@@ -1,28 +1,29 @@
-local redis = require "resty.redis"
+local stream = {}
 
-function redisConnect()
-    local red = redis:new()
+stream.redisPackage = require "resty.redis"
+stream.redis = stream.redisPackage:new()
 
-    local ok, err = red:connect(redisHost, redisPort)
+function stream.redisConnect(redisHost, redisPort)
+    local ok, err = stream.redis:connect(redisHost, redisPort)
     if not ok then
-        ngx.log(ngx.CRIT, "failed to connect redis: ", err)
+        ngx.log(ngx.CRIT, "redis: failed to connect: ", err)
         ngx.exit(ngx.HTTP_SERVICE_UNAVAILABLE)
     end
 end
 
-function getRedirectUrl()
-    local res, err = red:get(streamName)
+function stream.getRedirectUrl(streamName)
+    local res, err = stream.redis:get(streamName)
     if not res then
-        ngx.log(ngx.WARN, "failed to get stream: ", streamName,  " ",err)
+        ngx.log(ngx.WARN, "redis: failed to get stream: ", streamName, " ", err)
 
         ngx.exit(ngx.HTTP_SERVICE_UNAVAILABLE)
     end
 
     if res == ngx.null then
-        ngx.log(ngx.WARN, "Stream not found: ", streamName)
-
-        ngx.exit(ngx.HTTP_NOT_FOUND)
+        ngx.log(ngx.WARN, "redis: stream not found: ", streamName)
     end
 
     return res
 end
+
+return stream
