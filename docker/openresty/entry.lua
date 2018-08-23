@@ -18,4 +18,4 @@ lead.rmqSend({
     ip = ngx.var.remote_addr
 })
 
-return ngx.redirect(url);
+return ngx.redirect(url)

@@ -23,15 +23,15 @@ class OfferController extends FOSRestController
     /**
      * @var OfferManager
      */
-    private $offerService;
+    private $offerManager;
 
     /**
      * OfferController constructor.
-     * @param OfferManager $offerService
+     * @param OfferManager $offerManager
      */
-    public function __construct(OfferManager $offerService)
+    public function __construct(OfferManager $offerManager)
     {
-        $this->offerService = $offerService;
+        $this->offerManager = $offerManager;
     }
 
     /**
@@ -41,7 +41,7 @@ class OfferController extends FOSRestController
      */
     public function getAll(): array
     {
-        $offers = $this->offerService->getOffers();
+        $offers = $this->offerManager->getOffers();
 
         return ['offers' => $offers];
     }
@@ -90,7 +90,7 @@ class OfferController extends FOSRestController
      */
     public function delete(Offer $offer): void
     {
-        $this->offerService->removeOffer($offer);
+        $this->offerManager->removeOffer($offer);
     }
 
     /**
@@ -112,7 +112,7 @@ class OfferController extends FOSRestController
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $this->offerService->updateOffer($offer);
+                $this->offerManager->updateOffer($offer);
 
                 return $this->routeRedirectView(
                     'app_offer_getone',
