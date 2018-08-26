@@ -10,11 +10,16 @@ function lead.rmqConnect(rmqHost, rmqPort, rmqUsername, rmqPass, rmqVhost)
         vhost = rmqVhost
     }
 
-    lead.mq = lead.rabbitmqPackage:new(opts)
+    local err;
+    lead.mq, err = lead.rabbitmqPackage:new(opts)
+    if err then
+        ngx.log(ngx.ERR, 'rmq: error ', err)
+        ngx.exit(ngx.HTTP_SERVICE_UNAVAILABLE)
+    end
 
     local ok, err = lead.mq:connect(rmqHost, rmqPort)
 
-    if not ok then
+    if not ok or err then
         ngx.log(ngx.CRIT, "rmq: failed to connect: ", err)
         ngx.exit(ngx.HTTP_SERVICE_UNAVAILABLE)
     end
@@ -26,12 +31,15 @@ function lead.rmqSend(message)
     headers["app-id"] = "luaresty"
     headers["persistent"] = "true"
     headers["content-type"] = "application/json"
+    headers["type"] =  "Lead"
 
     local ok, err = lead.mq:send(lead.cjson.encode(message), headers)
-    if not ok then
+    if not ok or err then
         ngx.log(ngx.CRIT, "rmq: failed to send message: ", err)
         ngx.exit(ngx.HTTP_SERVICE_UNAVAILABLE)
     end
+
+    ngx.log(ngx.DEBUG, "Message published" .. lead.cjson.encode(message) .. " with headers" .. lead.cjson.encode(headers))
 
     return true
 end
