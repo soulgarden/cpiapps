@@ -1,7 +1,7 @@
 local stream = require('/var/www/cpiapps/docker/openresty/stream')
 local lead = require('/var/www/cpiapps/docker/openresty/lead')
 
-local streamName = "stream";
+local streamName = "0b13e52d-b058-32fb-8507-10dec634a07c";
 
 stream.redisConnect(ngx.var.redisHost, ngx.var.redisPort);
 local url = stream.getRedirectUrl(streamName);

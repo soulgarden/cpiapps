@@ -1,0 +1,4 @@
+App\Entity\Offer:
+  offer_1:
+    name: offer1
+    link: "http://google.com"

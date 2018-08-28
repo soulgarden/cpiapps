@@ -17,7 +17,7 @@ Installation scripts are optimized to run only on Linux.
 
 To run the project, run the following commands in the console from the root of the project folder.
 * docker_manage_hosts
-* make docker_up docker_composer_install
+* make docker_up docker_prepare
 
 ## Tests ##
 

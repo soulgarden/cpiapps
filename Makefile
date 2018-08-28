@@ -7,8 +7,15 @@ docker_down:
 docker_restart:
 	docker-compose restart
 
-docker_php_prepare: docker_composer_install
+docker_prepare: docker_composer_install docker_openresty_lua_params_prepare docker_php_setup_rmq
+	docker-compose exec --user=www-data php ./backend/bin/console doctrine:schema:update --force
+	docker-compose exec --user=www-data php ./backend/bin/console hautelook:fixtures:load -n
+
+docker_openresty_lua_params_prepare:
 	cp -n ./docker/openresty/lua_parameters.conf.dist ./docker/openresty/lua_parameters.conf
+
+docker_php_setup_rmq:
+	docker-compose exec --user=www-data php ./backend/bin/console rabbitmq:setup-fabric
 
 docker_composer_install:
 	docker-compose exec --user=www-data php composer install -o -d backend

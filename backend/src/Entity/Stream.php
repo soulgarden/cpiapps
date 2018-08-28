@@ -39,6 +39,13 @@ class Stream
     private $link;
 
     /**
+     * @var string
+     * @Assert\Length(max="37")
+     * @ORM\Column(type="string", length=37)
+     */
+    private $uuid;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Host", mappedBy="stream")
      */
     private $hosts;
@@ -235,5 +242,21 @@ class Stream
         }
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid(): string
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param string $uuid
+     */
+    public function setUuid(string $uuid): void
+    {
+        $this->uuid = $uuid;
     }
 }

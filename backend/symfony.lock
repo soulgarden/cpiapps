@@ -176,23 +176,29 @@
     "pdepend/pdepend": {
         "version": "2.5.2"
     },
+    "php-amqplib/php-amqplib": {
+        "version": "v2.7.2"
+    },
+    "php-amqplib/rabbitmq-bundle": {
+        "version": "1.12",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.12",
+            "ref": "ce3ca2e4577270c4f518539aa6b9e878998fcfef"
+        }
+    },
     "phpcollection/phpcollection": {
         "version": "0.5.0"
-    },
-    "phpdocumentor/reflection-common": {
-        "version": "1.0.1"
-    },
-    "phpdocumentor/reflection-docblock": {
-        "version": "4.3.0"
-    },
-    "phpdocumentor/type-resolver": {
-        "version": "0.4.0"
     },
     "phpmd/phpmd": {
         "version": "2.6.0"
     },
     "phpoption/phpoption": {
         "version": "1.5.0"
+    },
+    "predis/predis": {
+        "version": "v1.1.1"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -215,6 +221,15 @@
             "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
         }
     },
+    "snc/redis-bundle": {
+        "version": "2.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.0",
+            "ref": "e9c58bfc414cfb7f06e8e5ae9f589868498f5d6a"
+        }
+    },
     "squizlabs/php_codesniffer": {
         "version": "2.9.1"
     },
@@ -226,9 +241,6 @@
             "version": "1.2",
             "ref": "6c1ceb662f8997085f739cd089bfbef67f245983"
         }
-    },
-    "symfony/amqp-pack": {
-        "version": "v1.0.11"
     },
     "symfony/browser-kit": {
         "version": "v4.1.3"
@@ -323,15 +335,6 @@
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
     },
-    "symfony/messenger": {
-        "version": "4.1",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "4.1",
-            "ref": "85ab0b55d90a8f3e29e1b685a71f5b37923a7f5e"
-        }
-    },
     "symfony/options-resolver": {
         "version": "v4.1.3"
     },
@@ -347,9 +350,6 @@
     "symfony/property-access": {
         "version": "v4.1.3"
     },
-    "symfony/property-info": {
-        "version": "v4.1.3"
-    },
     "symfony/routing": {
         "version": "4.0",
         "recipe": {
@@ -361,12 +361,6 @@
     },
     "symfony/security-core": {
         "version": "v4.1.3"
-    },
-    "symfony/serializer": {
-        "version": "v4.1.3"
-    },
-    "symfony/serializer-pack": {
-        "version": "v1.0.1"
     },
     "symfony/templating": {
         "version": "v4.1.3"
@@ -415,9 +409,6 @@
     },
     "twig/twig": {
         "version": "v2.5.0"
-    },
-    "webmozart/assert": {
-        "version": "1.3.0"
     },
     "willdurand/jsonp-callback-validator": {
         "version": "v1.1.0"

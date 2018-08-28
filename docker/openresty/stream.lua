@@ -12,9 +12,9 @@ function stream.redisConnect(redisHost, redisPort)
 end
 
 function stream.getRedirectUrl(streamName)
-    local res, err = stream.redis:get(streamName)
+    local res, err = stream.redis:get('stream:' .. streamName)
     if not res then
-        ngx.log(ngx.WARN, "redis: failed to get stream: ", streamName, " ", err)
+        ngx.log(ngx.WARN, "redis: failed to get stream: " .. streamName .. " " .. err)
 
         ngx.exit(ngx.HTTP_SERVICE_UNAVAILABLE)
     end

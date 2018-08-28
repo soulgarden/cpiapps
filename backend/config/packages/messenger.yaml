@@ -1,9 +1,0 @@
-framework:
-  messenger:
-    transports:
-      # Uncomment the following line to enable a transport named "amqp"
-      lead: '%env(MESSENGER_TRANSPORT_DSN)%''/%2f/lead'
-
-    routing:
-      # Route your messages to the transports
-      'App\Message\Lead': lead
