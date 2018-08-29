@@ -1,21 +1,24 @@
 local stream = require('/var/www/cpiapps/docker/openresty/stream')
 local lead = require('/var/www/cpiapps/docker/openresty/lead')
 
-local streamName = "0b13e52d-b058-32fb-8507-10dec634a07c";
+local streamUuid = ngx.var.uri:gsub("/", "")
+if streamUuid == "" then
+    ngx.exit(ngx.HTTP_NOT_FOUND)
+end
 
 stream.redisConnect(ngx.var.redisHost, ngx.var.redisPort);
-local url = stream.getRedirectUrl(streamName);
+local redirectUrl = stream.getRedirectUrl(streamUuid);
 
-if url == ngx.null then
+if redirectUrl == ngx.null then
     ngx.exit(ngx.HTTP_NOT_FOUND)
 end
 
 lead.rmqConnect(ngx.var.rmqHost, ngx.var.rmqPort, ngx.var.rmqUsername, ngx.var.rmqPass, ngx.var.rmqVhost)
 lead.rmqSend({
     agent = ngx.var.http_user_agent,
-    stream = streamName,
+    streamUuid = streamUuid,
     referrer = ngx.var.http_referer,
     ip = ngx.var.remote_addr
 })
 
-return ngx.redirect(url)
+return ngx.redirect(redirectUrl)

@@ -10,6 +10,7 @@ docker_restart:
 docker_prepare: docker_composer_install docker_openresty_lua_params_prepare docker_php_setup_rmq
 	docker-compose exec --user=www-data php ./backend/bin/console doctrine:schema:update --force
 	docker-compose exec --user=www-data php ./backend/bin/console hautelook:fixtures:load -n
+	./backend/bin/console app:redis-persis-streams
 
 docker_openresty_lua_params_prepare:
 	cp -n ./docker/openresty/lua_parameters.conf.dist ./docker/openresty/lua_parameters.conf
@@ -34,6 +35,8 @@ docker_run_tests:
 	docker-compose exec --user=www-data php ./backend/vendor/bin/behat --config ./backend/behat.yml
 
 docker_manage_hosts:
+	sudo chmod 744 ./docker/manage-etc-hosts.sh
+	sudo ./docker/manage-etc-hosts.sh add entry.cpiapps.local      160.10.101.3
 	sudo ./docker/manage-etc-hosts.sh add cpiapps.local            160.10.101.3
 	sudo ./docker/manage-etc-hosts.sh add redis.cpiapps.local      160.10.101.4
 	sudo ./docker/manage-etc-hosts.sh add rabbitmq.cpiapps.local   160.10.101.5
