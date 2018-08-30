@@ -10,7 +10,7 @@ docker_restart:
 docker_prepare: docker_composer_install docker_openresty_lua_params_prepare docker_php_setup_rmq
 	docker-compose exec --user=www-data php ./backend/bin/console doctrine:schema:update --force
 	docker-compose exec --user=www-data php ./backend/bin/console hautelook:fixtures:load -n
-	./backend/bin/console app:redis-persis-streams
+	docker-compose exec --user=www-data php ./backend/bin/console app:redis-persis-streams
 
 docker_openresty_lua_params_prepare:
 	cp -n ./docker/openresty/lua_parameters.conf.dist ./docker/openresty/lua_parameters.conf
