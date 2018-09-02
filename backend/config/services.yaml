@@ -36,3 +36,13 @@ services:
     arguments:
       - '@Doctrine\ORM\EntityManagerInterface'
       - '@logger'
+
+  App\Consumer\HitConsumer:
+    arguments:
+      - '@Doctrine\ORM\EntityManagerInterface'
+      - '@logger'
+
+  App\Consumer\HostConsumer:
+    arguments:
+      - '@Doctrine\ORM\EntityManagerInterface'
+      - '@logger'

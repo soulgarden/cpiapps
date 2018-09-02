@@ -15,7 +15,7 @@ Used stack and tools:
 * redis
 
 ## Installation
-Installation scripts are optimized to run only on Linux.
+Installation scripts are optimized to run on Linux.
 
 To run the project, run the following commands in the console from the root of the project folder.
 

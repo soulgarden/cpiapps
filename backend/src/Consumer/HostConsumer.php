@@ -2,6 +2,7 @@
 
 namespace App\Consumer;
 
+use App\Entity\Host;
 use App\Entity\Lead;
 use App\Entity\Stream;
 use App\Exception\InvalidFormatException;
@@ -12,10 +13,10 @@ use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class LeadConsumer
+ * Class HostConsumer
  * @package App\Consumer
  */
-class LeadConsumer implements BatchConsumerInterface
+class HostConsumer implements BatchConsumerInterface
 {
     /**
      * @var EntityManagerInterface
@@ -28,7 +29,7 @@ class LeadConsumer implements BatchConsumerInterface
     private $logger;
 
     /**
-     * LeadConsumer constructor.
+     * HostConsumer constructor.
      * @param EntityManagerInterface $entityManager
      * @param LoggerInterface        $logger
      */
@@ -49,7 +50,7 @@ class LeadConsumer implements BatchConsumerInterface
         try {
             foreach ($messages as $message) {
                 try {
-                    $lead = $this->extractLeadFromMessage($message);
+                    $lead = $this->extractHostFromMessage($message);
                     $this->entityManager->persist($lead);
                 } catch (InvalidFormatException $e) {
                     $this->logger->critical($e->getMessage(), ['rawMessage' => $message->getBody()]);
@@ -72,7 +73,7 @@ class LeadConsumer implements BatchConsumerInterface
      * @param AMQPMessage $message
      * @return Lead
      */
-    private function extractLeadFromMessage(AMQPMessage $message): Lead
+    private function extractHostFromMessage(AMQPMessage $message): Lead
     {
         $decodedMessage = json_decode($message->getBody(), true);
 
@@ -81,7 +82,7 @@ class LeadConsumer implements BatchConsumerInterface
                 ['uuid' => $decodedMessage['stream']]
             );
 
-            return new Lead($stream, $decodedMessage['agent']);
+            return new Host($stream, $decodedMessage['agent']);
         }
 
         throw new InvalidFormatException('Invalid message format');

@@ -1,5 +1,7 @@
+local ck = require "resty.cookie"
+local uuid = require 'resty.jit-uuid'
 local stream = require('/var/www/cpiapps/docker/openresty/stream')
-local lead = require('/var/www/cpiapps/docker/openresty/lead')
+local rmq = require('/var/www/cpiapps/docker/openresty/rmq')
 
 local streamUuid = ngx.var.uri:gsub("/", "")
 if streamUuid == "" then
@@ -13,12 +15,49 @@ if redirectUrl == ngx.null then
     ngx.exit(ngx.HTTP_NOT_FOUND)
 end
 
-lead.rmqConnect(ngx.var.rmqHost, ngx.var.rmqPort, ngx.var.rmqUsername, ngx.var.rmqPass, ngx.var.rmqVhost)
-lead.rmqSend({
+local hitInfo = {
     agent = ngx.var.http_user_agent,
     streamUuid = streamUuid,
     referrer = ngx.var.http_referer,
-    ip = ngx.var.remote_addr
+    ip = ngx.var.remote_addr,
+    uuid = uuid.generate_v4()
+}
+
+rmq.rmqConnect(ngx.var.rmqHost, ngx.var.rmqPort, ngx.var.rmqUsername, ngx.var.rmqPass, ngx.var.rmqVhost)
+rmq.rmqSend(hitInfo, "/exchange/hit")
+
+local cookie, err = ck:new()
+
+local hostUuuid, err = cookie:get("stream:" .. streamUuid)
+if hostUuuid then
+    return ngx.redirect(redirectUrl)
+end
+
+hostUuuid = uuid.generate_v4()
+
+local ok, err = cookie:set({
+    key = "stream:" .. streamUuid,
+    value = hostUuuid,
+    path = "/",
+    httponly = true,
+    expires = ngx.cookie_time(ngx.time() + 60 * 60 * 24)
 })
+
+local hostInfo = {
+    agent = ngx.var.http_user_agent,
+    streamUuid = streamUuid,
+    referrer = ngx.var.http_referer,
+    ip = ngx.var.remote_addr,
+    uuid = hostUuuid
+}
+
+rmq.rmqSend(hostInfo, "/exchange/host")
+rmq.rmqSend({
+    agent = ngx.var.http_user_agent,
+    streamUuid = streamUuid,
+    referrer = ngx.var.http_referer,
+    ip = ngx.var.remote_addr,
+    hostUuuid = hostUuuid
+}, "/exchange/lead")
 
 return ngx.redirect(redirectUrl)
