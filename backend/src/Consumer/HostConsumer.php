@@ -3,7 +3,6 @@
 namespace App\Consumer;
 
 use App\Entity\Host;
-use App\Entity\Lead;
 use App\Entity\Stream;
 use App\Exception\InvalidFormatException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -58,7 +57,7 @@ class HostConsumer implements BatchConsumerInterface
             }
             $this->entityManager->flush();
         } catch (Exception $e) {
-            $this->logger->critical('Error with processing leads: ' . $e->getMessage());
+            $this->logger->critical('Error with processing hosts: ' . $e->getMessage());
             $this->entityManager->getConnection()->rollBack();
 
             return false;
@@ -71,18 +70,23 @@ class HostConsumer implements BatchConsumerInterface
 
     /**
      * @param AMQPMessage $message
-     * @return Lead
+     * @return Host
      */
-    private function extractHostFromMessage(AMQPMessage $message): Lead
+    private function extractHostFromMessage(AMQPMessage $message): Host
     {
         $decodedMessage = json_decode($message->getBody(), true);
 
         if ($decodedMessage && $this->validateMessage($decodedMessage)) {
             $stream = $this->entityManager->getRepository(Stream::class)->findOneBy(
-                ['uuid' => $decodedMessage['stream']]
+                ['uuid' => $decodedMessage['streamUuid']]
             );
 
-            return new Host($stream, $decodedMessage['agent']);
+            return new Host(
+                $stream,
+                $decodedMessage['agent'],
+                $decodedMessage['uuid'],
+                isset($decodedMessage['ip']) ? $decodedMessage['ip'] : null
+            );
         }
 
         throw new InvalidFormatException('Invalid message format');
@@ -94,6 +98,7 @@ class HostConsumer implements BatchConsumerInterface
      */
     private function validateMessage(array $decodedMessage): bool
     {
-        return isset($decodedMessage['stream']) && \is_string($decodedMessage['agent']);
+        return isset($decodedMessage['uuid'], $decodedMessage['streamUuid']) &&
+            \is_string($decodedMessage['agent']);
     }
 }

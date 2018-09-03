@@ -7,6 +7,7 @@ use App\Entity\Common\AgentTrait;
 use App\Entity\Common\IdTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LeadRepository")
@@ -31,14 +32,23 @@ class Lead
     private $status = LeadStatusDictionary::STATUS_APPROVED;
 
     /**
+     * @var string
+     * @ORM\Column(type="guid")
+     * @Assert\Uuid(strict=true)
+     */
+    private $hostUuid;
+
+    /**
      * Lead constructor.
      * @param Stream $stream
      * @param string $agent
+     * @param string $hostUuid
      */
-    public function __construct(Stream $stream, string $agent)
+    public function __construct(Stream $stream, string $agent, string $hostUuid)
     {
         $this->stream = $stream;
         $this->agent = $agent;
+        $this->hostUuid = $hostUuid;
     }
 
     /**
@@ -74,5 +84,21 @@ class Lead
     public function setStatus(string $status): void
     {
         $this->status = $status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHostUuid(): string
+    {
+        return $this->hostUuid;
+    }
+
+    /**
+     * @param string $hostUuid
+     */
+    public function setHostUuid(string $hostUuid): void
+    {
+        $this->hostUuid = $hostUuid;
     }
 }

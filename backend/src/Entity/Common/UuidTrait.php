@@ -14,7 +14,6 @@ trait UuidTrait
     /**
      * @ORM\Id()
      * @ORM\Column(type="guid")
-     * @ORM\GeneratedValue(strategy="UUID")
      * @Assert\Uuid(strict=true)
      */
     private $uuid;

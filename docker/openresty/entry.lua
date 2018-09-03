@@ -28,16 +28,16 @@ rmq.rmqSend(hitInfo, "/exchange/hit")
 
 local cookie, err = ck:new()
 
-local hostUuuid, err = cookie:get("stream:" .. streamUuid)
-if hostUuuid then
+local hostUuid, err = cookie:get("stream:" .. streamUuid)
+if hostUuid then
     return ngx.redirect(redirectUrl)
 end
 
-hostUuuid = uuid.generate_v4()
+hostUuid = uuid.generate_v4()
 
 local ok, err = cookie:set({
     key = "stream:" .. streamUuid,
-    value = hostUuuid,
+    value = hostUuid,
     path = "/",
     httponly = true,
     expires = ngx.cookie_time(ngx.time() + 60 * 60 * 24)
@@ -48,7 +48,7 @@ local hostInfo = {
     streamUuid = streamUuid,
     referrer = ngx.var.http_referer,
     ip = ngx.var.remote_addr,
-    uuid = hostUuuid
+    uuid = hostUuid
 }
 
 rmq.rmqSend(hostInfo, "/exchange/host")
@@ -57,7 +57,7 @@ rmq.rmqSend({
     streamUuid = streamUuid,
     referrer = ngx.var.http_referer,
     ip = ngx.var.remote_addr,
-    hostUuuid = hostUuuid
+    hostUuid = hostUuid
 }, "/exchange/lead")
 
 return ngx.redirect(redirectUrl)

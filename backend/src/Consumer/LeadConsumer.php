@@ -78,10 +78,10 @@ class LeadConsumer implements BatchConsumerInterface
 
         if ($decodedMessage && $this->validateMessage($decodedMessage)) {
             $stream = $this->entityManager->getRepository(Stream::class)->findOneBy(
-                ['uuid' => $decodedMessage['stream']]
+                ['uuid' => $decodedMessage['streamUuid']]
             );
 
-            return new Lead($stream, $decodedMessage['agent']);
+            return new Lead($stream, $decodedMessage['agent'], $decodedMessage['hostUuid']);
         }
 
         throw new InvalidFormatException('Invalid message format');
@@ -93,6 +93,7 @@ class LeadConsumer implements BatchConsumerInterface
      */
     private function validateMessage(array $decodedMessage): bool
     {
-        return isset($decodedMessage['stream']) && \is_string($decodedMessage['agent']);
+        return isset($decodedMessage['streamUuid'], $decodedMessage['hostUuid'])
+            && \is_string($decodedMessage['agent']);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Common\AgentTrait;
+use App\Entity\Common\IpTrait;
 use App\Entity\Common\UuidTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -14,6 +15,7 @@ class Host
 {
     use UuidTrait;
     use AgentTrait;
+    use IpTrait;
     use TimestampableEntity;
 
     /**
@@ -24,14 +26,18 @@ class Host
     private $stream;
 
     /**
-     * Lead constructor.
-     * @param Stream $stream
-     * @param string $agent
+     * Host constructor.
+     * @param Stream      $stream
+     * @param string      $agent
+     * @param string      $uuid
+     * @param null|string $ip
      */
-    public function __construct(Stream $stream, string $agent)
+    public function __construct(Stream $stream, string $agent, string $uuid, ?string $ip = null)
     {
         $this->stream = $stream;
         $this->agent = $agent;
+        $this->uuid = $uuid;
+        $this->ip = $ip;
     }
 
     /**
