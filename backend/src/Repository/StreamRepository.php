@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Dictionary\ActivityStatusDictionary;
 use App\Entity\Stream;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -23,32 +24,20 @@ class StreamRepository extends ServiceEntityRepository
         parent::__construct($registry, Stream::class);
     }
 
-//    /**
-//     * @return Stream[] Returns an array of Stream objects
-//     */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Stream[] Returns an array of Stream objects
+     */
+    public function findAllByActive(): array
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('t')
+            ->innerJoin('t.offer', 'o')
+            ->andWhere(
+                't.status = :streamStatus AND o.status = :offerStatus AND t.deletedAt IS NULL AND o.deletedAt IS NULL'
+            )
+            ->setParameter('streamStatus', ActivityStatusDictionary::STATUS_ACTIVE)
+            ->setParameter('offerStatus', ActivityStatusDictionary::STATUS_ACTIVE)
+            ->orderBy('t.id', 'ASC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Stream
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

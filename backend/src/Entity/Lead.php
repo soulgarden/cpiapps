@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Dictionary\LeadStatusDictionary;
 use App\Entity\Common\AgentTrait;
 use App\Entity\Common\IdTrait;
+use App\Entity\Common\LeadStatusTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -16,10 +17,12 @@ class Lead
 {
     use IdTrait;
     use AgentTrait;
+    use LeadStatusTrait;
     use TimestampableEntity;
 
     /**
      * @var Stream
+     * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="App\Entity\Stream", inversedBy="leads")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -27,12 +30,7 @@ class Lead
 
     /**
      * @var string
-     * @ORM\Column(type="string")
-     */
-    private $status = LeadStatusDictionary::STATUS_APPROVED;
-
-    /**
-     * @var string
+     * @Assert\NotBlank()
      * @ORM\Column(type="guid")
      * @Assert\Uuid(strict=true)
      */
@@ -49,21 +47,22 @@ class Lead
         $this->stream = $stream;
         $this->agent = $agent;
         $this->hostUuid = $hostUuid;
+        $this->status = LeadStatusDictionary::STATUS_APPROVED;
     }
 
     /**
-     * @return Stream|null
+     * @return Stream
      */
-    public function getStream(): ?Stream
+    public function getStream(): Stream
     {
         return $this->stream;
     }
 
     /**
-     * @param Stream|null $stream
+     * @param Stream $stream
      * @return Lead
      */
-    public function setStream(?Stream $stream): self
+    public function setStream(Stream $stream): self
     {
         $this->stream = $stream;
 

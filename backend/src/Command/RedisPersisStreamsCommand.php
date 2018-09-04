@@ -68,7 +68,7 @@ class RedisPersisStreamsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $streams = $this->streamRepository->findAll();
+        $streams = $this->streamRepository->findAllByActive();
         foreach ($streams as $stream) {
             $this->redisClient->set('stream:' . $stream->getUuid(), $stream->getLink());
         }

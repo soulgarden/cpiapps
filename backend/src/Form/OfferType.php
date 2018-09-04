@@ -2,8 +2,11 @@
 
 namespace App\Form;
 
+use App\Dictionary\ActivityStatusDictionary;
 use App\Entity\Offer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -21,7 +24,17 @@ class OfferType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('link');
+            ->add('link', UrlType::class)
+            ->add(
+                'status',
+                ChoiceType::class,
+                [
+                    'choices' => [
+                        ActivityStatusDictionary::STATUS_ACTIVE => ActivityStatusDictionary::STATUS_ACTIVE,
+                        ActivityStatusDictionary::STATUS_ACTIVE => ActivityStatusDictionary::STATUS_INACTIVE,
+                    ],
+                ]
+            );
     }
 
     /**

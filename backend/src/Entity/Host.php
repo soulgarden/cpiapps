@@ -7,6 +7,7 @@ use App\Entity\Common\IpTrait;
 use App\Entity\Common\UuidTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\HostRepository")
@@ -20,6 +21,7 @@ class Host
 
     /**
      * @var Stream
+     * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="App\Entity\Stream", inversedBy="hosts")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -41,18 +43,18 @@ class Host
     }
 
     /**
-     * @return Stream|null
+     * @return Stream
      */
-    public function getStream(): ?Stream
+    public function getStream(): Stream
     {
         return $this->stream;
     }
 
     /**
-     * @param Stream|null $stream
+     * @param Stream $stream
      * @return Host
      */
-    public function setStream(?Stream $stream): self
+    public function setStream(Stream $stream): self
     {
         $this->stream = $stream;
 

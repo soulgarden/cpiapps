@@ -46,7 +46,7 @@ class User
     {
         if (!$this->streams->contains($stream)) {
             $this->streams[] = $stream;
-            $stream->setOwner($this);
+            $stream->setUser($this);
         }
 
         return $this;
@@ -62,7 +62,7 @@ class User
             $this->streams->removeElement($stream);
             // set the owning side to null (unless already changed)
             if ($stream->getUser() === $this) {
-                $stream->setOwner(null);
+                $stream->setUser(null);
             }
         }
 

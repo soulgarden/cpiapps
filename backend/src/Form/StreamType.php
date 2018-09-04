@@ -2,11 +2,13 @@
 
 namespace App\Form;
 
+use App\Dictionary\ActivityStatusDictionary;
 use App\Entity\Offer;
 use App\Entity\Stream;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -36,6 +38,16 @@ class StreamType extends AbstractType
                 EntityType::class,
                 [
                     'class' => Offer::class,
+                ]
+            )
+            ->add(
+                'status',
+                ChoiceType::class,
+                [
+                    'choices' => [
+                        ActivityStatusDictionary::STATUS_ACTIVE => ActivityStatusDictionary::STATUS_ACTIVE,
+                        ActivityStatusDictionary::STATUS_ACTIVE => ActivityStatusDictionary::STATUS_INACTIVE,
+                    ],
                 ]
             );
     }
