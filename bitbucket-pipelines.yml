@@ -14,5 +14,16 @@ pipelines:
           - apt-get update && apt-get install -y unzip libssl-dev libicu-dev zip git zlib1g-dev libpq-dev librabbitmq-dev
           - docker-php-ext-install -j$(nproc) zip json intl pdo pdo_pgsql pgsql opcache bcmath
           - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+          - export APP_ENV=dev DATABASE_URL=pgsql://cpiapps:cpiapps@localhost:5432/cpiapps
           - composer install -o -d backend
           - ./backend/vendor/bin/behat --config ./backend/behat.yml
+        services:
+          - postgres
+definitions:
+  services:
+    postgres:
+      image: postgres:11-alpine
+      environment:
+        POSTGRES_DB: 'cpiapps'
+        POSTGRES_USER: 'cpiapps'
+        POSTGRES_PASSWORD: 'cpiapps'

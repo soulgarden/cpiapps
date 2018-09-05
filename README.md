@@ -2,9 +2,7 @@
 
 Cpiapps is a backend for CPI platform.
 
-This project was created not for commercial use, only just for fun.
-
-Used stack and tools:
+Used technologies and tools:
 
 * php 7.2
 * symfony 4

@@ -14,10 +14,11 @@ trait ActivityStatusTrait
 {
     /**
      * @var string
-     * @Assert\Choice({ActivityStatusDictionary::STATUS_ACTIVE, ActivityStatusDictionary::STATUS_INACTIVE})
+     * @Assert\NotBlank()
+     * @Assert\Choice(choices={ActivityStatusDictionary::STATUS_ACTIVE, ActivityStatusDictionary::STATUS_INACTIVE})
      * @ORM\Column(type="string")
      */
-    private $status;
+    private $status = ActivityStatusDictionary::STATUS_ACTIVE;
 
     /**
      * @return string
@@ -28,10 +29,10 @@ trait ActivityStatusTrait
     }
 
     /**
-     * @param string $status
+     * @param string|null $status
      * @return self
      */
-    public function setStatus(string $status): self
+    public function setStatus(?string $status): self
     {
         $this->status = $status;
 

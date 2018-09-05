@@ -2,18 +2,19 @@
 
 namespace App\Entity;
 
-use App\Dictionary\ActivityStatusDictionary;
 use App\Entity\Common\ActivityStatusTrait;
 use App\Entity\Common\IdTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OfferRepository")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  */
 class Offer
 {
@@ -47,7 +48,6 @@ class Offer
     public function __construct()
     {
         $this->streams = new ArrayCollection();
-        $this->status = ActivityStatusDictionary::STATUS_ACTIVE;
     }
 
     /**

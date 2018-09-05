@@ -4,3 +4,4 @@ App\Entity\Stream:
     link: "http://google.com"
     user: "@user_1"
     offer: "@offer_1"
+    status: "active"

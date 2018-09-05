@@ -7,9 +7,7 @@ docker_down:
 docker_restart:
 	docker-compose restart
 
-docker_prepare: docker_composer_install docker_openresty_lua_params_prepare docker_php_setup_rmq
-	docker-compose exec --user=www-data php ./backend/bin/console doctrine:schema:update --force
-	docker-compose exec --user=www-data php ./backend/bin/console hautelook:fixtures:load -n
+docker_prepare: docker_composer_install docker_openresty_lua_params_prepare docker_php_setup_rmq docker_database_update_scheme docker_load_fixtures
 	docker-compose exec --user=www-data php ./backend/bin/console app:redis-persis-streams
 
 docker_openresty_lua_params_prepare:
@@ -30,9 +28,18 @@ docker_openresty_bash:
 docker_redis_bash:
 	docker-compose exec redis /bin/sh
 
-docker_run_tests:
-	docker-compose exec --user=www-data php ./backend/bin/console hautelook:fixtures:load
+docker_run_tests: docker_recreate_database docker_database_update_scheme docker_load_fixtures
 	docker-compose exec --user=www-data php ./backend/vendor/bin/behat --config ./backend/behat.yml
+
+docker_load_fixtures:
+	docker-compose exec --user=www-data php ./backend/bin/console hautelook:fixtures:load -n --purge-with-truncate
+
+make docker_recreate_database:
+	docker-compose exec --user=www-data php ./backend/bin/console doctrine:database:drop --force --if-exists
+	docker-compose exec --user=www-data php ./backend/bin/console doctrine:database:create --if-not-exists
+
+make docker_database_update_scheme:
+	docker-compose exec --user=www-data php ./backend/bin/console doctrine:schema:update --force
 
 docker_manage_hosts:
 	sudo chmod 744 ./docker/manage-etc-hosts.sh

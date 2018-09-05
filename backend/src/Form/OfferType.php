@@ -31,7 +31,7 @@ class OfferType extends AbstractType
                 [
                     'choices' => [
                         ActivityStatusDictionary::STATUS_ACTIVE => ActivityStatusDictionary::STATUS_ACTIVE,
-                        ActivityStatusDictionary::STATUS_ACTIVE => ActivityStatusDictionary::STATUS_INACTIVE,
+                        ActivityStatusDictionary::STATUS_INACTIVE => ActivityStatusDictionary::STATUS_INACTIVE,
                     ],
                 ]
             );

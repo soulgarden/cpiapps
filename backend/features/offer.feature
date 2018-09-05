@@ -2,17 +2,33 @@ Feature: Offer
 
   Scenario: Create new offer
     When I add "Content-Type" header equal to "application/json"
-    And I send a POST request to "/api/v1/offers"
+    And I send a POST request to "/api/v1/offers/" with body:
+    """
+      {
+      "offer": {
+        "name": "Test",
+        "link": "http://example.com",
+        "status": "active"
+      }
+    }
+    """
     Then the response status code should be 201
-    And the response should be in JSON
-    And the JSON node success should be true
+    And the header "Location" should contain "/api/v1/offers/2"
 
   Scenario: Update offer
     When I add "Content-Type" header equal to "application/json"
-    And I send a PUT request to "/api/v1/offers/1"
+    And I send a PUT request to "/api/v1/offers/2" with body:
+    """
+      {
+      "offer": {
+        "name": "Test",
+        "link": "http://example.com",
+        "status": "active"
+      }
+    }
+    """
     Then the response status code should be 204
-    And the response should be in JSON
-    And the JSON node success should be true
+    And the header "Location" should contain "/api/v1/offers/2"
 
   Scenario: Get all offers
     When I add "Content-Type" header equal to "application/json"
@@ -31,6 +47,4 @@ Feature: Offer
   Scenario: Delete offer
     When I add "Content-Type" header equal to "application/json"
     And I send a DELETE request to "/api/v1/offers/1"
-    Then the response status code should be 200
-    And the response should be in JSON
-    And the JSON node success should be true
+    Then the response status code should be 204
