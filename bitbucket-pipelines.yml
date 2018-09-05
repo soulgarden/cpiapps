@@ -16,6 +16,8 @@ pipelines:
           - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
           - export APP_ENV=dev DATABASE_URL=pgsql://cpiapps:cpiapps@localhost:5432/cpiapps
           - composer install -o -d backend
+          - ./backend/bin/console doctrine:schema:update --force
+          - ./backend/bin/console hautelook:fixtures:load -n --purge-with-truncate
           - ./backend/vendor/bin/behat --config ./backend/behat.yml -vvv
         services:
           - postgres
