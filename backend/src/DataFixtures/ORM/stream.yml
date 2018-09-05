@@ -1,0 +1,7 @@
+App\Entity\Stream:
+  stream_1:
+    uuid: "<uuid()>"
+    link: "http://google.com"
+    user: "@user_1"
+    offer: "@offer_1"
+    status: "active"

@@ -12,8 +12,24 @@ pipelines:
           - composer
         script:
           - apt-get update && apt-get install -y unzip libssl-dev libicu-dev zip git zlib1g-dev libpq-dev librabbitmq-dev
-          - pear install amqp
-          - docker-php-ext-enable amqp
+          - docker-php-ext-install -j$(nproc) zip json intl pdo pdo_pgsql pgsql opcache bcmath
           - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+          - export APP_ENV=dev APP_SECRET=9f0fd8085278aa93fdd15b408b133e82
+          - export DATABASE_URL=pgsql://cpiapps:cpiapps@localhost:5432/cpiapps REDIS_URL=redis://localhost
           - composer install -o -d backend
-          - ./backend/vendor/bin/behat --config ./backend/behat.yml
+          - ./backend/bin/console doctrine:schema:update --force
+          - ./backend/bin/console hautelook:fixtures:load -n --purge-with-truncate
+          - ./backend/vendor/bin/behat --config ./backend/behat.yml -vvv
+        services:
+          - postgres
+          - redis
+definitions:
+  services:
+    postgres:
+      image: postgres:11-alpine
+      environment:
+        POSTGRES_DB: 'cpiapps'
+        POSTGRES_USER: 'cpiapps'
+        POSTGRES_PASSWORD: 'cpiapps'
+    redis:
+      image: redis:4.0.11-alpine

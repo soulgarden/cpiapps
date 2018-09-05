@@ -1,7 +1,8 @@
 FROM php:7.2-fpm
 
-RUN apt-get update && apt-get install -y libssl-dev libicu-dev zip git zlib1g-dev libpq-dev
-RUN docker-php-ext-install -j$(nproc) zip json intl pdo pdo_pgsql pgsql json opcache
+RUN apt-get update && apt-get install -y libssl-dev libicu-dev zip git zlib1g-dev libpq-dev librabbitmq-dev
+RUN docker-php-ext-install -j$(nproc) zip json intl pdo pdo_pgsql pgsql opcache bcmath
+RUN pecl install amqp && docker-php-ext-enable amqp
 
 WORKDIR /var/www/cpiapps/
 

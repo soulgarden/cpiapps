@@ -2,34 +2,57 @@
 
 namespace App\Entity;
 
-use App\Entity\Common\AgentTrait;
+use App\Dictionary\ActivityStatusDictionary;
+use App\Entity\Common\ActivityStatusTrait;
 use App\Entity\Common\IdTrait;
-use App\Entity\Common\OfferTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\StreamRepository")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
+ * @UniqueEntity("uuid")
  */
 class Stream
 {
     use IdTrait;
-    use AgentTrait;
-    use OfferTrait;
+    use ActivityStatusTrait;
     use TimestampableEntity;
+    use SoftDeleteableEntity;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="streams")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $owner;
+    private $user;
 
     /**
+     * @Assert\NotBlank()
+     * @ORM\ManyToOne(targetEntity="App\Entity\Offer", inversedBy="streams")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $offer;
+
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Length(max="255")
      * @ORM\Column(type="string", length=255)
      */
     private $link;
+
+    /**
+     * @var string
+     * @Assert\Length(max="37")
+     * @ORM\Column(type="string", length=37)
+     */
+    private $uuid;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Host", mappedBy="stream")
@@ -59,18 +82,37 @@ class Stream
     /**
      * @return User|null
      */
-    public function getOwner(): ?User
+    public function getUser(): ?User
     {
-        return $this->owner;
+        return $this->user;
     }
 
     /**
-     * @param User|null $owner
+     * @param User $user
      * @return Stream
      */
-    public function setOwner(?User $owner): self
+    public function setUser(User $user): self
     {
-        $this->owner = $owner;
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Offer|null
+     */
+    public function getOffer(): ?Offer
+    {
+        return $this->offer;
+    }
+
+    /**
+     * @param Offer $offer
+     * @return $this
+     */
+    public function setOffer(Offer $offer): self
+    {
+        $this->offer = $offer;
 
         return $this;
     }
@@ -180,6 +222,10 @@ class Stream
         return $this->leads;
     }
 
+    /**
+     * @param Lead $lead
+     * @return Stream
+     */
     public function addLead(Lead $lead): self
     {
         if (!$this->leads->contains($lead)) {
@@ -190,6 +236,10 @@ class Stream
         return $this;
     }
 
+    /**
+     * @param Lead $lead
+     * @return Stream
+     */
     public function removeLead(Lead $lead): self
     {
         if ($this->leads->contains($lead)) {
@@ -201,5 +251,21 @@ class Stream
         }
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid(): string
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param string $uuid
+     */
+    public function setUuid(string $uuid): void
+    {
+        $this->uuid = $uuid;
     }
 }

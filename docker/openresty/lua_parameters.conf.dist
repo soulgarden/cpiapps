@@ -1,0 +1,7 @@
+set $redisHost   "160.10.101.4";
+set $redisPort   "6379";
+set $rmqHost     "160.10.101.5";
+set $rmqPort     "61613";
+set $rmqUsername "guest";
+set $rmqPass     "guest";
+set $rmqVhost    "/";

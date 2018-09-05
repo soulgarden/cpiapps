@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
+ * @ORM\Table(name="`user`")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
 class User
@@ -17,7 +18,7 @@ class User
     use TimestampableEntity;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Stream", mappedBy="owner")
+     * @ORM\OneToMany(targetEntity="App\Entity\Stream", mappedBy="user")
      */
     private $streams;
 
@@ -45,7 +46,7 @@ class User
     {
         if (!$this->streams->contains($stream)) {
             $this->streams[] = $stream;
-            $stream->setOwner($this);
+            $stream->setUser($this);
         }
 
         return $this;
@@ -60,8 +61,8 @@ class User
         if ($this->streams->contains($stream)) {
             $this->streams->removeElement($stream);
             // set the owning side to null (unless already changed)
-            if ($stream->getOwner() === $this) {
-                $stream->setOwner(null);
+            if ($stream->getUser() === $this) {
+                $stream->setUser(null);
             }
         }
 
