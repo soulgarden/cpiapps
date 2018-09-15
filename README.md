@@ -15,9 +15,13 @@ Used technologies and tools:
 ## Installation
 Installation scripts are optimized to run on Linux.
 
-* docker_manage_hosts
+* install docker and docker-compose
+* make docker_manage_hosts
 * make docker_up
-* docker_prepare
+* make  docker_prepare
+
+
+* make configure_code_sniffer
 
 ## Tests ##
 
