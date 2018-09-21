@@ -1,6 +1,9 @@
 docker_up:
 	docker-compose up --build -d
 
+docker_up_mac:
+	docker-compose -f docker-compose.yml -f docker-compose-mac.yml up --build -d
+
 docker_down:
 	docker-compose down
 
@@ -49,6 +52,16 @@ docker_manage_hosts:
 	sudo ./docker/manage-etc-hosts.sh add rabbitmq.cpiapps.local   160.10.101.5
 	sudo ./docker/manage-etc-hosts.sh add mailcather.cpiapps.local 160.10.101.6
 	sudo ./docker/manage-etc-hosts.sh add postgresql.cpiapps.local 160.10.101.7
+
+docker_manage_hosts_mac:
+	sudo chmod 744 ./docker/manage-etc-hosts.sh
+	ETC_HOSTS=/private/etc/hosts
+	sudo ./docker/manage-etc-hosts.sh add entry.cpiapps.local
+	sudo ./docker/manage-etc-hosts.sh add cpiapps.local
+	sudo ./docker/manage-etc-hosts.sh add redis.cpiapps.local
+	sudo ./docker/manage-etc-hosts.sh add rabbitmq.cpiapps.local
+	sudo ./docker/manage-etc-hosts.sh add mailcather.cpiapps.local
+	sudo ./docker/manage-etc-hosts.sh add postgresql.cpiapps.local
 
 configure_code_sniffer:
 	./backend/vendor/squizlabs/php_codesniffer/scripts/phpcs --config-set encoding utf-8

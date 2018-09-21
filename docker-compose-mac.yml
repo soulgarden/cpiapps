@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+    postgresql:
+        ports: ["5432:5432"]
+    
+    php:
+        ports: ["9000:9000"]
+    
+    openresty:
+        ports: ["80:80"]
+    
+    rabbitmq:
+        ports: ["15672:15672"]
+    
+    mailcatcher:
+        ports: ["1080:1080"]

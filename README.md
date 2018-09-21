@@ -13,12 +13,13 @@ Used technologies and tools:
 * redis
 
 ## Installation
-Installation scripts are optimized to run on Linux.
 
 * install docker and docker-compose
-* make docker_manage_hosts
-* make docker_up
-* make  docker_prepare
+* make docker_manage_hosts       # linux
+* make docker_manage_hosts_mac   # mac
+* make docker_up                 # linux
+* make docker_up_mac             # mac 
+* make docker_prepare
 
 
 * make configure_code_sniffer
