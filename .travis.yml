@@ -1,0 +1,35 @@
+# Project language
+language: php
+
+# Allows use container-based infrastructure
+sudo: false
+
+# Start mysql service
+services:
+    - postgresql
+
+# Cache composer packages so "composer install" is faster
+cache:
+    directories:
+        - $HOME/.composer/cache/files
+
+# Matrix to test in every php version
+matrix:
+    # Fast finish allows to set the build as "finished" even if the "allow_failures" matrix elements are not finished yet.
+    include:
+        - php: 7.1
+        - php: 7.2
+        - php: 7.3
+
+# Update composer
+before-install:
+    - composer self-update
+
+install:
+    - cp backend/.env.dist backend/.env
+    - composer install -o -d backend
+
+script:
+    - ./bin/console lint:yaml config
+    - composer validate --strict
+    - ./bin/console doctrine:schema:validate --skip-sync -vvv --no-interaction
