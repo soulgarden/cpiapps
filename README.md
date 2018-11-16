@@ -1,5 +1,7 @@
 # cpiapps
 
+[![Build Status](https://travis-ci.com/soulgarden/cpiapps.svg?branch=master)](https://travis-ci.com/soulgarden/cpiapps)
+
 Cpiapps is a backend for CPI platform.
 
 Used technologies and tools:

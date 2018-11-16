@@ -17,9 +17,7 @@ cache:
 matrix:
     # Fast finish allows to set the build as "finished" even if the "allow_failures" matrix elements are not finished yet.
     include:
-        - php: 7.1
         - php: 7.2
-        - php: 7.3
 
 # Update composer
 before-install:
@@ -28,8 +26,17 @@ before-install:
 install:
     - cp backend/.env.dist backend/.env
     - composer install -o -d backend
+env:
+    - DATABASE_URL=pgsql://cpiapps:cpiapps@127.0.0.1:5432/cpiapps
+
+before_script:
+    - psql -c "CREATE DATABASE cpiapps;" -U postgres
+    - psql -c "CREATE USER cpiapps WITH PASSWORD 'cpiapps';" -U postgres
 
 script:
-    - ./bin/console lint:yaml config
-    - composer validate --strict
-    - ./bin/console doctrine:schema:validate --skip-sync -vvv --no-interaction
+    - ./backend/bin/console lint:yaml ./backend/config
+    - composer validate --strict -d backend
+    - ./backend/bin/console doctrine:schema:validate --skip-sync -vvv --no-interaction
+    - ./backend/bin/console doctrine:schema:update --force
+    - ./backend/bin/console hautelook:fixtures:load -n --purge-with-truncate
+    - ./backend/vendor/bin/behat --config ./backend/behat.yml

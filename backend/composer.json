@@ -1,5 +1,7 @@
 {
   "type": "project",
+  "name": "soulgarden/cpiapps",
+  "description": "Cpiapps is a backend for CPI platform.",
   "license": "MIT",
   "minimum-stability": "dev",
   "prefer-stable": true,
@@ -19,7 +21,6 @@
     "symfony/flex": "^1.0",
     "symfony/form": "^4.1",
     "symfony/framework-bundle": "^4.1",
-    "symfony/lts": "^4@dev",
     "symfony/monolog-bundle": "^3.3",
     "symfony/orm-pack": "^1.0",
     "symfony/twig-bundle": "^4.1",
@@ -27,6 +28,7 @@
     "symfony/yaml": "^4.1"
   },
   "require-dev": {
+    "roave/security-advisories": "dev-master",
     "behat/behat": "^3.5",
     "behat/mink": "^1.7",
     "behat/mink-browserkit-driver": "^1.3",
