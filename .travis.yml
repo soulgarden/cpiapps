@@ -1,5 +1,7 @@
 # Project language
 language: php
+php:
+    - 7.1.9
 
 # Allows use container-based infrastructure
 sudo: false
@@ -7,17 +9,13 @@ sudo: false
 # Start mysql service
 services:
     - postgresql
+    - redis-server
+    - rabbitmq
 
 # Cache composer packages so "composer install" is faster
 cache:
     directories:
         - $HOME/.composer/cache/files
-
-# Matrix to test in every php version
-matrix:
-    # Fast finish allows to set the build as "finished" even if the "allow_failures" matrix elements are not finished yet.
-    include:
-        - php: 7.2
 
 # Update composer
 before-install:
@@ -27,7 +25,10 @@ install:
     - cp backend/.env.dist backend/.env
     - composer install -o -d backend
 env:
-    - DATABASE_URL=pgsql://cpiapps:cpiapps@127.0.0.1:5432/cpiapps
+    global:
+        - DATABASE_URL=pgsql://cpiapps:cpiapps@127.0.0.1:5432/cpiapps
+        - REDIS_URL=redis://127.0.0.1
+        - RABBITMQ_URL=amqp://guest:guest@127.0.0.1:5672
 
 before_script:
     - psql -c "CREATE DATABASE cpiapps;" -U postgres
@@ -39,4 +40,4 @@ script:
     - ./backend/bin/console doctrine:schema:validate --skip-sync -vvv --no-interaction
     - ./backend/bin/console doctrine:schema:update --force
     - ./backend/bin/console hautelook:fixtures:load -n --purge-with-truncate
-    - ./backend/vendor/bin/behat --config ./backend/behat.yml
+    - ./backend/vendor/bin/behat --config ./backend/behat.yml -n
