@@ -6,7 +6,7 @@ Cpiapps is a backend for CPI platform.
 
 Used technologies and tools:
 
-* php 7.2
+* php 7.3
 * symfony 4
 * lua
 * postgresql 
@@ -14,13 +14,18 @@ Used technologies and tools:
 * openresty
 * redis
 
-## Installation
+## Project Installation
 
-* install docker and docker-compose
-* make docker_manage_hosts       # linux
-* make docker_manage_hosts_mac   # mac
-* make docker_up                 # linux
-* make docker_up_mac             # mac 
+* install docker and docker-compose [instruction](https://docs.docker.com/install/)
+
+For mac
+* make docker_manage_hosts_mac
+* make docker_up_mac
+* make docker_prepare
+
+For linux
+* make docker_manage_hosts
+* make docker_up
 * make docker_prepare
 
 
