@@ -3,7 +3,7 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
-image: php:7.2-fpm
+image: php:7.3-fpm
 
 pipelines:
   default:
@@ -26,10 +26,10 @@ pipelines:
 definitions:
   services:
     postgres:
-      image: postgres:11-alpine
+      image: postgres:11.4-alpine
       environment:
         POSTGRES_DB: 'cpiapps'
         POSTGRES_USER: 'cpiapps'
         POSTGRES_PASSWORD: 'cpiapps'
     redis:
-      image: redis:4.0.11-alpine
+      image: redis:5.0.5-alpine
