@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -27,6 +28,7 @@ class OfferController extends FOSRestController
 
     /**
      * OfferController constructor.
+     *
      * @param OfferManager $offerManager
      */
     public function __construct(OfferManager $offerManager)
@@ -37,6 +39,7 @@ class OfferController extends FOSRestController
     /**
      * @Route("/", methods={"GET"})
      * @RestView()
+     *
      * @return array
      */
     public function getAll(): array
@@ -50,7 +53,9 @@ class OfferController extends FOSRestController
      * @Route("/{id}", methods={"GET"})
      * @ParamConverter(name="offer", class="App\Entity\Offer")
      * @RestView()
+     *
      * @param Offer $offer
+     *
      * @return array
      */
     public function getOne(Offer $offer): array
@@ -61,8 +66,10 @@ class OfferController extends FOSRestController
     /**
      * @Route("/", methods={"POST"})
      * @RestView()
+     *
      * @param Request $request
-     * @return View|FormInterface
+     *
+     * @return FormInterface|View
      */
     public function create(Request $request)
     {
@@ -73,9 +80,11 @@ class OfferController extends FOSRestController
      * @Route("/{id}", methods={"PUT"})
      * @ParamConverter(name="offer", class="App\Entity\Offer")
      * @RestView()
+     *
      * @param Request $request
      * @param Offer   $offer
-     * @return View|FormInterface
+     *
+     * @return FormInterface|View
      */
     public function update(Request $request, Offer $offer)
     {
@@ -86,6 +95,7 @@ class OfferController extends FOSRestController
      * @Route("/{id}", methods={"DELETE"})
      * @ParamConverter(name="offer", class="App\Entity\Offer")
      * @RestView(statusCode=204)
+     *
      * @param Offer $offer
      */
     public function delete(Offer $offer): void
@@ -96,6 +106,7 @@ class OfferController extends FOSRestController
     /**
      * @param Request $request
      * @param Offer   $offer
+     *
      * @return View
      */
     private function processRequestForm(Request $request, Offer $offer): View

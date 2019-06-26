@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Repository;
 
@@ -7,8 +8,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method Host|null find($id, $lockMode = null, $lockVersion = null)
- * @method Host|null findOneBy(array $criteria, array $orderBy = null)
+ * @method null|Host find($id, $lockMode = null, $lockVersion = null)
+ * @method null|Host findOneBy(array $criteria, array $orderBy = null)
  * @method Host[]    findAll()
  * @method Host[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
@@ -16,6 +17,7 @@ class HostRepository extends ServiceEntityRepository
 {
     /**
      * HostRepository constructor.
+     *
      * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)

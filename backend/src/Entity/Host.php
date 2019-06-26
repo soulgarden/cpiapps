@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -29,6 +30,7 @@ class Host
 
     /**
      * Host constructor.
+     *
      * @param Stream      $stream
      * @param string      $agent
      * @param string      $uuid
@@ -52,6 +54,7 @@ class Host
 
     /**
      * @param Stream $stream
+     *
      * @return Host
      */
     public function setStream(Stream $stream): self

@@ -1,8 +1,8 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Dictionary\ActivityStatusDictionary;
 use App\Entity\Common\ActivityStatusTrait;
 use App\Entity\Common\IdTrait;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -80,7 +80,7 @@ class Stream
     }
 
     /**
-     * @return User|null
+     * @return null|User
      */
     public function getUser(): ?User
     {
@@ -89,6 +89,7 @@ class Stream
 
     /**
      * @param User $user
+     *
      * @return Stream
      */
     public function setUser(User $user): self
@@ -99,7 +100,7 @@ class Stream
     }
 
     /**
-     * @return Offer|null
+     * @return null|Offer
      */
     public function getOffer(): ?Offer
     {
@@ -108,6 +109,7 @@ class Stream
 
     /**
      * @param Offer $offer
+     *
      * @return $this
      */
     public function setOffer(Offer $offer): self
@@ -127,6 +129,7 @@ class Stream
 
     /**
      * @param string $link
+     *
      * @return Stream
      */
     public function setLink(string $link): self
@@ -146,6 +149,7 @@ class Stream
 
     /**
      * @param Host $host
+     *
      * @return Stream
      */
     public function addHost(Host $host): self
@@ -160,6 +164,7 @@ class Stream
 
     /**
      * @param Host $host
+     *
      * @return Stream
      */
     public function removeHost(Host $host): self
@@ -185,6 +190,7 @@ class Stream
 
     /**
      * @param Hit $hit
+     *
      * @return Stream
      */
     public function addHit(Hit $hit): self
@@ -199,6 +205,7 @@ class Stream
 
     /**
      * @param Hit $hit
+     *
      * @return Stream
      */
     public function removeHit(Hit $hit): self
@@ -224,6 +231,7 @@ class Stream
 
     /**
      * @param Lead $lead
+     *
      * @return Stream
      */
     public function addLead(Lead $lead): self
@@ -238,6 +246,7 @@ class Stream
 
     /**
      * @param Lead $lead
+     *
      * @return Stream
      */
     public function removeLead(Lead $lead): self

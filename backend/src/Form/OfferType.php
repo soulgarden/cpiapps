@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Form;
 
@@ -12,13 +13,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class OfferType
- * @package App\Form
  */
 class OfferType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

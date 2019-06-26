@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity\Common;
 
@@ -7,7 +8,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Trait AgentTrait
- * @package App\Entity\Common
  */
 trait AgentTrait
 {
@@ -28,6 +28,7 @@ trait AgentTrait
 
     /**
      * @param null|string $agent
+     *
      * @return $this
      */
     public function setAgent(?string $agent): self

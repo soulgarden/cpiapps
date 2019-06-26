@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity\Common;
 
@@ -7,7 +8,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Trait UuidTrait
- * @package App\Entity\Common
  */
 trait UuidTrait
 {
@@ -28,6 +28,7 @@ trait UuidTrait
 
     /**
      * @param string $uuid
+     *
      * @return $this
      */
     public function setUuid(string $uuid): self

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Repository;
 
@@ -8,8 +9,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method Stream|null find($id, $lockMode = null, $lockVersion = null)
- * @method Stream|null findOneBy(array $criteria, array $orderBy = null)
+ * @method null|Stream find($id, $lockMode = null, $lockVersion = null)
+ * @method null|Stream findOneBy(array $criteria, array $orderBy = null)
  * @method Stream[]    findAll()
  * @method Stream[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
@@ -17,6 +18,7 @@ class StreamRepository extends ServiceEntityRepository
 {
     /**
      * StreamRepository constructor.
+     *
      * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)

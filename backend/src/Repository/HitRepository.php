@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Repository;
 
@@ -7,8 +8,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method Hit|null find($id, $lockMode = null, $lockVersion = null)
- * @method Hit|null findOneBy(array $criteria, array $orderBy = null)
+ * @method null|Hit find($id, $lockMode = null, $lockVersion = null)
+ * @method null|Hit findOneBy(array $criteria, array $orderBy = null)
  * @method Hit[]    findAll()
  * @method Hit[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
@@ -16,6 +17,7 @@ class HitRepository extends ServiceEntityRepository
 {
     /**
      * HitRepository constructor.
+     *
      * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)

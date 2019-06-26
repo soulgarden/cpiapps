@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Consumer;
 
@@ -13,7 +14,6 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Class HostConsumer
- * @package App\Consumer
  */
 class HostConsumer implements BatchConsumerInterface
 {
@@ -29,6 +29,7 @@ class HostConsumer implements BatchConsumerInterface
 
     /**
      * HostConsumer constructor.
+     *
      * @param EntityManagerInterface $entityManager
      * @param LoggerInterface        $logger
      */
@@ -40,12 +41,15 @@ class HostConsumer implements BatchConsumerInterface
 
     /**
      * @param AMQPMessage[] $messages
-     * @return bool
+     *
      * @throws \Doctrine\DBAL\ConnectionException
+     *
+     * @return bool
      */
     public function batchExecute(array $messages): bool
     {
         $this->entityManager->getConnection()->beginTransaction();
+
         try {
             foreach ($messages as $message) {
                 try {
@@ -57,7 +61,7 @@ class HostConsumer implements BatchConsumerInterface
             }
             $this->entityManager->flush();
         } catch (Exception $e) {
-            $this->logger->critical('Error with processing hosts: ' . $e->getMessage());
+            $this->logger->critical('Error with processing hosts: '.$e->getMessage());
             $this->entityManager->getConnection()->rollBack();
 
             return false;
@@ -70,6 +74,7 @@ class HostConsumer implements BatchConsumerInterface
 
     /**
      * @param AMQPMessage $message
+     *
      * @return Host
      */
     private function extractHostFromMessage(AMQPMessage $message): Host
@@ -85,7 +90,7 @@ class HostConsumer implements BatchConsumerInterface
                 $stream,
                 $decodedMessage['agent'],
                 $decodedMessage['uuid'],
-                isset($decodedMessage['ip']) ? $decodedMessage['ip'] : null
+                $decodedMessage['ip'] ?? null
             );
         }
 
@@ -94,6 +99,7 @@ class HostConsumer implements BatchConsumerInterface
 
     /**
      * @param array $decodedMessage
+     *
      * @return bool
      */
     private function validateMessage(array $decodedMessage): bool

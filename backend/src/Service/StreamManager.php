@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Service;
 
@@ -8,7 +9,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * Class StreamManager
- * @package App\Service
  */
 class StreamManager
 {
@@ -19,6 +19,7 @@ class StreamManager
 
     /**
      * StreamService constructor.
+     *
      * @param ManagerRegistry $managerRegistry
      */
     public function __construct(ManagerRegistry $managerRegistry)

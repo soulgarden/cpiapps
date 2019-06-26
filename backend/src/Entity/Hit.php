@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -28,6 +29,7 @@ class Hit
 
     /**
      * Hit constructor.
+     *
      * @param Stream      $stream
      * @param string      $agent
      * @param string      $uuid
@@ -51,6 +53,7 @@ class Hit
 
     /**
      * @param Stream $stream
+     *
      * @return Hit
      */
     public function setStream(Stream $stream): self

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity\Common;
 
@@ -8,7 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Trait ActivityStatusTrait
- * @package App\Entity\Common
  */
 trait ActivityStatusTrait
 {
@@ -29,7 +29,8 @@ trait ActivityStatusTrait
     }
 
     /**
-     * @param string|null $status
+     * @param null|string $status
+     *
      * @return self
      */
     public function setStatus(?string $status): self

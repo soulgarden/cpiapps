@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity\Common;
 
@@ -6,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Trait IdTrait
- * @package App\Entity\Common
  */
 trait IdTrait
 {
@@ -18,7 +18,7 @@ trait IdTrait
     private $id;
 
     /**
-     * @return int|null
+     * @return null|int
      */
     public function getId(): ?int
     {

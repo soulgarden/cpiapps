@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -60,6 +61,7 @@ class Offer
 
     /**
      * @param string $name
+     *
      * @return Offer
      */
     public function setName(string $name): self
@@ -79,6 +81,7 @@ class Offer
 
     /**
      * @param string $link
+     *
      * @return Offer
      */
     public function setLink(string $link): self
@@ -90,6 +93,7 @@ class Offer
 
     /**
      * @param Lead $lead
+     *
      * @return Offer
      */
     public function removeLead(Lead $lead): self
@@ -115,6 +119,7 @@ class Offer
 
     /**
      * @param Stream $stream
+     *
      * @return Offer
      */
     public function addStream(Stream $stream): self
@@ -129,6 +134,7 @@ class Offer
 
     /**
      * @param Stream $stream
+     *
      * @return Offer
      */
     public function removeStream(Stream $stream): self

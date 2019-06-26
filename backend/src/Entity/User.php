@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -40,6 +41,7 @@ class User
 
     /**
      * @param Stream $stream
+     *
      * @return User
      */
     public function addStream(Stream $stream): self
@@ -54,6 +56,7 @@ class User
 
     /**
      * @param Stream $stream
+     *
      * @return User
      */
     public function removeStream(Stream $stream): self

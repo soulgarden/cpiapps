@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -38,6 +39,7 @@ class Lead
 
     /**
      * Lead constructor.
+     *
      * @param Stream $stream
      * @param string $agent
      * @param string $hostUuid
@@ -60,6 +62,7 @@ class Lead
 
     /**
      * @param Stream $stream
+     *
      * @return Lead
      */
     public function setStream(Stream $stream): self

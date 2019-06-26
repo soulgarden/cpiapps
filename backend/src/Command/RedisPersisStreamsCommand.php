@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Command;
 
@@ -12,7 +13,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class RedisPersisStreamsCommand
- * @package App\Command
  */
 class RedisPersisStreamsCommand extends Command
 {
@@ -33,6 +33,7 @@ class RedisPersisStreamsCommand extends Command
 
     /**
      * RedisPersisStreamsCommand constructor.
+     *
      * @param null|string      $name
      * @param StreamRepository $streamRepository
      * @param ClientInterface  $redisClient
@@ -64,13 +65,16 @@ class RedisPersisStreamsCommand extends Command
     /**
      * @param InputInterface  $input
      * @param OutputInterface $output
-     * @return int|null|void
+     *
+     * @return null|int|void
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $streams = $this->streamRepository->findAllByActive();
         foreach ($streams as $stream) {
-            $this->redisClient->set('stream:' . $stream->getUuid(), $stream->getLink());
+            $this->redisClient->set('stream:'.$stream->getUuid(), $stream->getLink());
         }
 
         $processedCount = \count($streams);

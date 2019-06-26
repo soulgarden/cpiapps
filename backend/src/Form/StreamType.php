@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Form;
 
@@ -14,13 +15,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class StreamType
- * @package App\Form
  */
 class StreamType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -46,7 +48,7 @@ class StreamType extends AbstractType
                 [
                     'choices' => [
                         ActivityStatusDictionary::STATUS_ACTIVE => ActivityStatusDictionary::STATUS_ACTIVE,
-                        ActivityStatusDictionary::STATUS_ACTIVE => ActivityStatusDictionary::STATUS_INACTIVE,
+                        ActivityStatusDictionary::STATUS_INACTIVE => ActivityStatusDictionary::STATUS_INACTIVE,
                     ],
                 ]
             );

@@ -1,10 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Consumer;
 
 use App\Entity\Lead;
 use App\Entity\Stream;
 use App\Exception\InvalidFormatException;
+use Doctrine\DBAL\ConnectionException;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use OldSound\RabbitMqBundle\RabbitMq\BatchConsumerInterface;
@@ -13,7 +15,6 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Class LeadConsumer
- * @package App\Consumer
  */
 class LeadConsumer implements BatchConsumerInterface
 {
@@ -29,6 +30,7 @@ class LeadConsumer implements BatchConsumerInterface
 
     /**
      * LeadConsumer constructor.
+     *
      * @param EntityManagerInterface $entityManager
      * @param LoggerInterface        $logger
      */
@@ -40,12 +42,15 @@ class LeadConsumer implements BatchConsumerInterface
 
     /**
      * @param AMQPMessage[] $messages
+     *
+     * @throws ConnectionException
+     *
      * @return bool
-     * @throws \Doctrine\DBAL\ConnectionException
      */
     public function batchExecute(array $messages): bool
     {
         $this->entityManager->getConnection()->beginTransaction();
+
         try {
             foreach ($messages as $message) {
                 try {
@@ -57,7 +62,7 @@ class LeadConsumer implements BatchConsumerInterface
             }
             $this->entityManager->flush();
         } catch (Exception $e) {
-            $this->logger->critical('Error with processing leads: ' . $e->getMessage());
+            $this->logger->critical('Error with processing leads: '.$e->getMessage());
             $this->entityManager->getConnection()->rollBack();
 
             return false;
@@ -70,6 +75,7 @@ class LeadConsumer implements BatchConsumerInterface
 
     /**
      * @param AMQPMessage $message
+     *
      * @return Lead
      */
     private function extractLeadFromMessage(AMQPMessage $message): Lead
@@ -89,6 +95,7 @@ class LeadConsumer implements BatchConsumerInterface
 
     /**
      * @param array $decodedMessage
+     *
      * @return bool
      */
     private function validateMessage(array $decodedMessage): bool
