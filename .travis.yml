@@ -23,7 +23,7 @@ before-install:
 
 install:
     - cp backend/.env.dist backend/.env
-    - composer install -o -d backend
+    - COMPOSER_MEMORY_LIMIT=-1 composer install -o -d backend
 env:
     global:
         - DATABASE_URL=pgsql://cpiapps:cpiapps@127.0.0.1:5432/cpiapps
@@ -42,5 +42,5 @@ script:
     - ./backend/bin/console hautelook:fixtures:load -n --purge-with-truncate
     - ./backend/vendor/bin/behat --config ./backend/behat.yml -n
     - ./backend/vendor/bin/phpcbf --standard=PSR2 --encoding=utf-8 --ignore=vendor,var,templates ./backend -p
-    - /backend/vendor/bin/php-cs-fixer fix --config=./backend/.php_cs.php
+    - ./backend/vendor/bin/php-cs-fixer fix --config=./backend/.php_cs.php
     - ./backend/vendor/bin/phpmd ./backend text ./backend/phpmd.xml --exclude /backend/vendor,/backend/var,/backend/templates
